@@ -5,8 +5,9 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: ["http://localhost:5500", "https://login-project-frontend.netlify.app"]
+}));app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 mongoose.connect(process.env.MONGO_URI)
