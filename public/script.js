@@ -20,8 +20,8 @@ async function registerUser(event) {
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch("http://localhost:3000/register", { // your backend API
-            method: "POST",
+       const response = await fetch("https://login-project.onrender.com/register", {
+
             headers: {
                 "Content-Type": "application/json"
             },
@@ -44,7 +44,8 @@ async function loginUser(event) {
     const password = document.getElementById("loginPassword").value;
 
     try {
-        const response = await fetch("http://localhost:3000/login", {
+        const response = await fetch("https://login-project.onrender.com/login", {
+
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
