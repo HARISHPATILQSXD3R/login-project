@@ -10,7 +10,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5500",
-    "https://login-project-frontend.netlify.app" // replace with your actual Netlify URL
+     "https://simpleloginpage20.netlify.app"  // replace with your actual Netlify URL
   ]
 }));
 
