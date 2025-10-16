@@ -5,42 +5,54 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
+
+// ✅ CORS for both local and Netlify frontend
 app.use(cors({
-  origin: ["http://localhost:5500", "https://login-project-frontend.netlify.app"]
-}));app.use(express.json());
+  origin: [
+    "http://localhost:5500",
+    "https://login-project-frontend.netlify.app" // replace with your actual Netlify URL
+  ]
+}));
+
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// ✅ MongoDB Atlas connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
+// ✅ User Schema
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String,
+  password: String
 });
 const User = mongoose.model("User", UserSchema);
 
-// Register route
+// ✅ Register route
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
+
     const user = new User({ name, email, password });
     await user.save();
     res.json({ message: "User registered successfully!" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
 
-// Login route
+// ✅ Login route
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email, password });
+
   if (user) {
     res.json({ message: "Login successful!", user });
   } else {
@@ -48,6 +60,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Start server
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
